@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Return Book - Library Management System{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4"><i class="bi bi-arrow-left-circle"></i> Return Book</h2>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Active Loans</h5>
+            
+            {% if active_loans %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Loan ID</th>
+                                <th>Book Title</th>
+                                <th>Member</th>
+                                <th>Issue Date</th>
+                                <th>Due Date</th>
+                                <th>Status</th>
+                                <th>Estimated Fine</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for loan in active_loans %}
+                            <tr class="{% if loan.Days_Overdue > 0 %}overdue-row{% endif %}">
+                                <td>{{ loan.Loan_ID }}</td>
+                                <td>{{ loan.Title }}</td>
+                                <td>{{ loan.Member_Name }}</td>
+                                <td>{{ loan.Issue_Date.strftime('%d %b %Y') }}</td>
+                                <td>{{ loan.Due_Date.strftime('%d %b %Y') }}</td>
+                                <td>
+                                    {% if loan.Days_Overdue > 0 %}
+                                        <span class="badge bg-danger">
+                                            <i class="bi bi-exclamation-triangle"></i>
+                                            Overdue ({{ loan.Days_Overdue }} days)
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-success">
+                                            <i class="bi bi-check-circle"></i>
+                                            On Time
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if loan.Estimated_Fine > 0 %}
+                                        <span class="text-danger fw-bold">
+                                            ₹{{ "%.2f"|format(loan.Estimated_Fine) }}
+                                        </span>
+                                    {% else %}
+                                        <span class="text-success">₹0.00</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <form method="POST" action="{{ url_for('return_book') }}" style="display: inline;">
+                                        <input type="hidden" name="loan_id" value="{{ loan.Loan_ID }}">
+                                        <button type="submit" class="btn btn-sm btn-primary" 
+                                                onclick="return confirm('Return this book?')">
+                                            <i class="bi bi-check-circle"></i> Return
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-info text-center">
+                    <i class="bi bi-info-circle"></i> No active loans at the moment.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card bg-light">
+        <div class="card-body">
+            <h5 class="card-title"><i class="bi bi-calculator"></i> Fine Calculation</h5>
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Membership Type</th>
+                        <th>Fine Rate</th>
+                        <th>Maximum Fine</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Student</td>
+                        <td>₹5 per day</td>
+                        <td>₹1,000</td>
+                    </tr>
+                    <tr>
+                        <td>Faculty</td>
+                        <td>₹3 per day</td>
+                        <td>₹1,000</td>
+                    </tr>
+                    <tr>
+                        <td>General</td>
+                        <td>₹10 per day</td>
+                        <td>₹1,000</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="small text-muted mb-0">
+                <strong><i class="bi bi-database"></i> Demo Tip:</strong> After returning a book, check the database to see:
+                <br>• LOAN table: Return_Date updated, Fine_Amount calculated, Status changed to 'Returned'
+                <br>• BOOK table: Available_Copies increased by 1
+                <br>• MEMBER table: Total_Fine updated (if fine was charged)
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

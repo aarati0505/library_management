@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Library Management System{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="bg-light py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="display-4">Welcome to Our Library</h1>
+                <p class="lead">Manage books, members, and loans efficiently with our comprehensive system</p>
+                <a href="{{ url_for('browse_books') }}" class="btn btn-gradient btn-lg me-2">
+                    <i class="bi bi-book"></i> Browse Books
+                </a>
+                <a href="{{ url_for('issue_book') }}" class="btn btn-outline-primary btn-lg">
+                    <i class="bi bi-arrow-right-circle"></i> Issue Book
+                </a>
+            </div>
+            <div class="col-md-4 text-center">
+                <i class="bi bi-book-fill" style="font-size: 150px; color: var(--primary-color);"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics -->
+<div class="container my-5">
+    <h2 class="mb-4 text-center">Library Statistics</h2>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="stat-card text-center">
+                <i class="bi bi-book-fill" style="font-size: 3rem;"></i>
+                <h2 class="mt-3">{{ stats.total_books }}</h2>
+                <p class="mb-0">Total Books</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card text-center">
+                <i class="bi bi-check-circle-fill" style="font-size: 3rem;"></i>
+                <h2 class="mt-3">{{ stats.available_copies }}</h2>
+                <p class="mb-0">Available Copies</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card text-center">
+                <i class="bi bi-people-fill" style="font-size: 3rem;"></i>
+                <h2 class="mt-3">{{ stats.total_members }}</h2>
+                <p class="mb-0">Total Members</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card text-center">
+                <i class="bi bi-arrow-repeat" style="font-size: 3rem;"></i>
+                <h2 class="mt-3">{{ stats.active_loans }}</h2>
+                <p class="mb-0">Active Loans</p>
+            </div>
+        </div>
+    </div>
+    
+    {% if stats.overdue_loans > 0 %}
+    <div class="alert alert-warning text-center mt-3">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <strong>{{ stats.overdue_loans }}</strong> overdue loan(s) need attention!
+        <a href="{{ url_for('reports') }}" class="alert-link">View Details</a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Featured Books -->
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Featured Books</h2>
+        <a href="{{ url_for('browse_books') }}" class="btn btn-outline-primary">
+            View All Books <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+    
+    <div class="row">
+        {% for book in books %}
+        <div class="col-md-3 mb-4">
+            <div class="card book-card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ book.Title }}</h5>
+                    <p class="card-text">
+                        <small class="text-muted">
+                            <i class="bi bi-person"></i> {{ book.Authors }}<br>
+                            <i class="bi bi-tag"></i> {{ book.Category_Name }}
+                        </small>
+                    </p>
+                    <p class="card-text">
+                        <strong>Publisher:</strong> {{ book.Publisher }}<br>
+                        <strong>Year:</strong> {{ book.Publication_Year }}
+                    </p>
+                    <hr>
+                    <p class="card-text">
+                        {% if book.Available_Copies > 0 %}
+                            <span class="available">
+                                <i class="bi bi-check-circle-fill"></i> 
+                                Available ({{ book.Available_Copies }} copies)
+                            </span>
+                        {% else %}
+                            <span class="unavailable">
+                                <i class="bi bi-x-circle-fill"></i> 
+                                Not Available
+                            </span>
+                        {% endif %}
+                    </p>
+                    {% if book.Available_Copies > 0 %}
+                        <a href="{{ url_for('issue_book') }}?isbn={{ book.ISBN }}" class="btn btn-primary btn-sm w-100">
+                            <i class="bi bi-arrow-right-circle"></i> Borrow
+                        </a>
+                    {% else %}
+                        <button class="btn btn-secondary btn-sm w-100" disabled>
+                            Not Available
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="container my-5">
+    <h2 class="mb-4 text-center">Quick Actions</h2>
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-arrow-right-circle" style="font-size: 3rem; color: var(--primary-color);"></i>
+                    <h5 class="card-title mt-3">Issue Book</h5>
+                    <p class="card-text">Lend a book to a member</p>
+                    <a href="{{ url_for('issue_book') }}" class="btn btn-gradient">Go <i class="bi bi-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-arrow-left-circle" style="font-size: 3rem; color: var(--primary-color);"></i>
+                    <h5 class="card-title mt-3">Return Book</h5>
+                    <p class="card-text">Process book returns and fines</p>
+                    <a href="{{ url_for('return_book') }}" class="btn btn-gradient">Go <i class="bi bi-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-graph-up" style="font-size: 3rem; color: var(--primary-color);"></i>
+                    <h5 class="card-title mt-3">View Reports</h5>
+                    <p class="card-text">Statistics and analytics</p>
+                    <a href="{{ url_for('reports') }}" class="btn btn-gradient">Go <i class="bi bi-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

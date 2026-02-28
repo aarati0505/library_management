@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}Reports - Library Management System{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4"><i class="bi bi-graph-up"></i> Reports & Analytics</h2>
+    
+    <!-- Most Borrowed Books -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="bi bi-trophy"></i> Most Borrowed Books</h5>
+        </div>
+        <div class="card-body">
+            {% if most_borrowed %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Book Title</th>
+                                <th>Author(s)</th>
+                                <th>Times Borrowed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for book in most_borrowed %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ book.Title }}</td>
+                                <td>{{ book.Authors }}</td>
+                                <td>
+                                    <span class="badge bg-success">{{ book.Loan_Count }}</span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted">No loan data available yet.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Overdue Books -->
+    <div class="card mb-4">
+        <div class="card-header bg-danger text-white">
+            <h5 class="mb-0"><i class="bi bi-exclamation-triangle"></i> Overdue Books</h5>
+        </div>
+        <div class="card-body">
+            {% if overdue_books %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Loan ID</th>
+                                <th>Book Title</th>
+                                <th>Member Name</th>
+                                <th>Phone</th>
+                                <th>Due Date</th>
+                                <th>Days Overdue</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for loan in overdue_books %}
+                            <tr class="overdue-row">
+                                <td>{{ loan.Loan_ID }}</td>
+                                <td>{{ loan.Title }}</td>
+                                <td>{{ loan.Member_Name }}</td>
+                                <td>{{ loan.Phone }}</td>
+                                <td>{{ loan.Due_Date.strftime('%d %b %Y') }}</td>
+                                <td>
+                                    <span class="badge bg-danger">{{ loan.Days_Overdue }} days</span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-success">
+                    <i class="bi bi-check-circle"></i> No overdue books! All loans are on time.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Members with Fines -->
+    <div class="card mb-4">
+        <div class="card-header bg-warning text-dark">
+            <h5 class="mb-0"><i class="bi bi-cash-coin"></i> Members with Outstanding Fines</h5>
+        </div>
+        <div class="card-body">
+            {% if members_with_fines %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Member Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Membership Type</th>
+                                <th>Total Fine</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for member in members_with_fines %}
+                            <tr>
+                                <td>{{ member.Name }}</td>
+                                <td>{{ member.Email }}</td>
+                                <td>{{ member.Phone }}</td>
+                                <td>
+                                    <span class="badge bg-info">{{ member.Membership_Type }}</span>
+                                </td>
+                                <td>
+                                    <span class="text-danger fw-bold">
+                                        ₹{{ "%.2f"|format(member.Total_Fine) }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-success">
+                    <i class="bi bi-check-circle"></i> No outstanding fines! All members are clear.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

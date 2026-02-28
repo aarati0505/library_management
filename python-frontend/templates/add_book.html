@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Add Book - Library Management System{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4"><i class="bi bi-plus-circle"></i> Add New Book</h2>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('add_book') }}">
+                        <div class="mb-3">
+                            <label for="isbn" class="form-label">ISBN *</label>
+                            <input type="text" class="form-control" id="isbn" name="isbn" 
+                                   pattern="[0-9]{13}" maxlength="13" required
+                                   placeholder="Enter 13-digit ISBN">
+                            <small class="text-muted">Must be exactly 13 digits</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title *</label>
+                            <input type="text" class="form-control" id="title" name="title" 
+                                   maxlength="200" required placeholder="Enter book title">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="publisher" class="form-label">Publisher *</label>
+                            <input type="text" class="form-control" id="publisher" name="publisher" 
+                                   maxlength="100" required placeholder="Enter publisher name">
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="publication_year" class="form-label">Publication Year *</label>
+                                <input type="number" class="form-control" id="publication_year" 
+                                       name="publication_year" min="1800" max="2024" required
+                                       placeholder="e.g., 2020">
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="total_copies" class="form-label">Total Copies *</label>
+                                <input type="number" class="form-control" id="total_copies" 
+                                       name="total_copies" min="1" required placeholder="e.g., 5">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="category_id" class="form-label">Category *</label>
+                            <select class="form-select" id="category_id" name="category_id" required>
+                                <option value="">Choose a category...</option>
+                                {% for category in categories %}
+                                <option value="{{ category.Category_ID }}">{{ category.Category_Name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-check-circle"></i> Add Book
+                        </button>
+                        <a href="{{ url_for('browse_books') }}" class="btn btn-secondary btn-lg">
+                            <i class="bi bi-x-circle"></i> Cancel
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-info-circle"></i> Information</h5>
+                    <p>Add a new book to the library collection.</p>
+                    <hr>
+                    <h6>Required Fields:</h6>
+                    <ul class="small">
+                        <li>ISBN (13 digits)</li>
+                        <li>Title</li>
+                        <li>Publisher</li>
+                        <li>Publication Year</li>
+                        <li>Number of Copies</li>
+                        <li>Category</li>
+                    </ul>
+                    <hr>
+                    <p class="small text-muted mb-0">
+                        <strong>Note:</strong> Available copies will be set equal to total copies initially.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

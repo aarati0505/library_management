@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Issue Book - Library Management System{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4"><i class="bi bi-arrow-right-circle"></i> Issue Book to Member</h2>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('issue_book') }}">
+                        <div class="mb-3">
+                            <label for="member_id" class="form-label">Select Member *</label>
+                            <select class="form-select" id="member_id" name="member_id" required>
+                                <option value="">Choose a member...</option>
+                                {% for member in members %}
+                                <option value="{{ member.Member_ID }}">
+                                    {{ member.Name }} ({{ member.Membership_Type }}) - {{ member.Email }}
+                                    {% if member.Total_Fine > 0 %}
+                                        - Fine: ₹{{ "%.2f"|format(member.Total_Fine) }}
+                                    {% endif %}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="isbn" class="form-label">Select Book *</label>
+                            <select class="form-select" id="isbn" name="isbn" required>
+                                <option value="">Choose a book...</option>
+                                {% for book in books %}
+                                <option value="{{ book.ISBN }}">
+                                    {{ book.Title }} by {{ book.Authors }} 
+                                    ({{ book.Available_Copies }} available)
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <strong><i class="bi bi-info-circle"></i> Loan Periods:</strong><br>
+                            • Student: 14 days (₹5/day fine)<br>
+                            • Faculty: 30 days (₹3/day fine)<br>
+                            • General: 7 days (₹10/day fine)<br>
+                            <small class="text-muted">Maximum fine per book: ₹1,000</small>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-check-circle"></i> Issue Book
+                        </button>
+                        <a href="{{ url_for('index') }}" class="btn btn-secondary btn-lg">
+                            <i class="bi bi-x-circle"></i> Cancel
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-lightbulb"></i> Instructions</h5>
+                    <ol>
+                        <li>Select the member who wants to borrow</li>
+                        <li>Select the book to issue</li>
+                        <li>Click "Issue Book"</li>
+                        <li>The system will:
+                            <ul>
+                                <li>Create a loan record</li>
+                                <li>Decrease available copies</li>
+                                <li>Calculate due date</li>
+                            </ul>
+                        </li>
+                    </ol>
+                    <hr>
+                    <h6><i class="bi bi-database"></i> Demo Tip:</h6>
+                    <p class="small">After issuing, check the database to see:
+                        <br>• New record in LOAN table
+                        <br>• Updated Available_Copies in BOOK table
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

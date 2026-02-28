@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Add Member - Library Management System{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4"><i class="bi bi-person-plus"></i> Add New Member</h2>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('add_member') }}">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Full Name *</label>
+                            <input type="text" class="form-control" id="name" name="name" 
+                                   maxlength="100" required placeholder="Enter full name">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email *</label>
+                            <input type="email" class="form-control" id="email" name="email" 
+                                   maxlength="100" required placeholder="Enter email address">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone Number *</label>
+                            <input type="text" class="form-control" id="phone" name="phone" 
+                                   pattern="[0-9]{10}" maxlength="10" required
+                                   placeholder="Enter 10-digit phone number">
+                            <small class="text-muted">Must be exactly 10 digits</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address</label>
+                            <textarea class="form-control" id="address" name="address" 
+                                      rows="3" maxlength="200" 
+                                      placeholder="Enter residential address (optional)"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="membership_type" class="form-label">Membership Type *</label>
+                            <select class="form-select" id="membership_type" name="membership_type" required>
+                                <option value="">Choose membership type...</option>
+                                <option value="Student">Student (14-day loan, ₹5/day fine)</option>
+                                <option value="Faculty">Faculty (30-day loan, ₹3/day fine)</option>
+                                <option value="General">General (7-day loan, ₹10/day fine)</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-check-circle"></i> Add Member
+                        </button>
+                        <a href="{{ url_for('index') }}" class="btn btn-secondary btn-lg">
+                            <i class="bi bi-x-circle"></i> Cancel
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-info-circle"></i> Membership Types</h5>
+                    
+                    <div class="mb-3">
+                        <h6>Student</h6>
+                        <ul class="small">
+                            <li>Loan Period: 14 days</li>
+                            <li>Fine Rate: ₹5 per day</li>
+                        </ul>
+                    </div>
+
+                    <div class="mb-3">
+                        <h6>Faculty</h6>
+                        <ul class="small">
+                            <li>Loan Period: 30 days</li>
+                            <li>Fine Rate: ₹3 per day</li>
+                        </ul>
+                    </div>
+
+                    <div class="mb-3">
+                        <h6>General</h6>
+                        <ul class="small">
+                            <li>Loan Period: 7 days</li>
+                            <li>Fine Rate: ₹10 per day</li>
+                        </ul>
+                    </div>
+
+                    <hr>
+                    <p class="small text-muted mb-0">
+                        <strong>Note:</strong> Maximum fine per book is capped at ₹1,000.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
