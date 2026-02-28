@@ -155,84 +155,7 @@ You should see the beautiful home page with statistics!
 
 ---
 
-## 🎬 Perfect Demo Script
 
-### Scenario 1: Issue a Book
-
-**Step 1: Show Database Before**
-```sql
--- Open MySQL Workbench or command line
-SELECT ISBN, Title, Available_Copies 
-FROM BOOK 
-WHERE ISBN = '9780439708180';
-
--- Result: Available_Copies = 3
-```
-
-**Step 2: Use Your Application**
-1. Open: http://localhost:5000/issue-book
-2. Select Member: "Rahul Verma (Student)"
-3. Select Book: "Harry Potter and the Sorcerer's Stone"
-4. Click "Issue Book"
-5. See success message with due date
-
-**Step 3: Show Database After**
-```sql
--- Run same query:
-SELECT ISBN, Title, Available_Copies 
-FROM BOOK 
-WHERE ISBN = '9780439708180';
-
--- Result: Available_Copies = 2 ✅ UPDATED!
-
--- Show new loan:
-SELECT * FROM LOAN ORDER BY Loan_ID DESC LIMIT 1;
--- New record created with Due_Date ✅
-```
-
-### Scenario 2: Return a Book (with Fine)
-
-**Step 1: Show Database Before**
-```sql
-SELECT Loan_ID, ISBN, Status, Return_Date, Fine_Amount 
-FROM LOAN 
-WHERE Loan_ID = 6;
-
--- Result: Status = 'Overdue', Return_Date = NULL
-```
-
-**Step 2: Use Your Application**
-1. Open: http://localhost:5000/return-book
-2. Find overdue loan (highlighted in yellow)
-3. See "Estimated Fine: ₹50.00"
-4. Click "Return" button
-5. See success message: "Fine charged: ₹50.00"
-
-**Step 3: Show Database After**
-```sql
--- Check LOAN table:
-SELECT Loan_ID, Status, Return_Date, Fine_Amount 
-FROM LOAN 
-WHERE Loan_ID = 6;
-
--- Result: Status = 'Returned', Return_Date = today, Fine_Amount = 50.00 ✅
-
--- Check BOOK table:
-SELECT ISBN, Available_Copies 
-FROM BOOK 
-WHERE ISBN = '9781612680194';
-
--- Available_Copies increased ✅
-
--- Check MEMBER table:
-SELECT Member_ID, Name, Total_Fine 
-FROM MEMBER 
-WHERE Member_ID = 3;
-
--- Total_Fine increased by 50.00 ✅
-```
-
----
 
 ## 🐛 Troubleshooting
 
@@ -326,47 +249,6 @@ conn.commit()  # Save changes
 
 ---
 
-## 🎓 For Your Demo
-
-### What to Show Evaluators:
-
-1. **Beautiful Interface** ✅
-   - Open http://localhost:5000
-   - Show home page with statistics
-   - Navigate through different pages
-
-2. **Issue Book** ✅
-   - Show database before (MySQL Workbench)
-   - Issue a book through interface
-   - Show database after (values changed!)
-
-3. **Return Book** ✅
-   - Show overdue loan
-   - Return it
-   - Show fine calculation
-   - Show database updates (3 tables updated!)
-
-4. **Reports** ✅
-   - Most borrowed books
-   - Overdue books
-   - Members with fines
-
-5. **Add Features** ✅
-   - Add a new book
-   - Add a new member
-   - Show in database
-
-### What Evaluators Will Love:
-
-- ✅ Clean, professional UI
-- ✅ Real-time database updates
-- ✅ Proper fine calculation
-- ✅ All constraints enforced
-- ✅ Python code (not PHP!)
-- ✅ Easy to understand
-- ✅ Everything works!
-
----
 
 ## 📝 Code Highlights
 
@@ -405,16 +287,7 @@ due_date = (datetime.now() + timedelta(days=days)).strftime('%Y-%m-%d')
 - [ ] Practiced demo script 2-3 times
 
 ---
-
-## 🎉 You're Ready!
-
-**Total setup time:** 15 minutes  
-**Technologies:** Python Flask + MySQL (no PHP!)  
-**Lines of code:** ~400 lines Python + HTML templates  
-**Features:** All 8 major features working  
-**Database updates:** Real-time, visible immediately  
-
-**This is exactly what you need for your demo!** 🚀
+ 🚀
 
 ---
 
@@ -440,4 +313,4 @@ If you get stuck:
 4. Check database has data
 5. Ask me for help!
 
-**Good luck with your demo! You've got this!** 🎓
+
