@@ -116,16 +116,6 @@ Change port in app.py:
 app.run(debug=True, port=5001)
 ```
 
-## 📚 Documentation
-
-See `PYTHON_SETUP_GUIDE.md` for:
-- Detailed setup instructions
-- Complete demo script
-- Troubleshooting guide
-- Code explanations
-
-## ✅ Ready to Demo!
-
 **Setup time:** 15 minutes  
 **Demo ready:** Immediately  
 **Full marks:** Guaranteed (if you follow the demo script)  
