@@ -3,7 +3,7 @@
 ## ✅ What You Have
 
 A complete **Python Flask application** with:
-- ✅ Direct MySQL connectivity (no PHP!)
+- ✅ Direct MySQL connectivity
 - ✅ Beautiful responsive frontend (Bootstrap 5)
 - ✅ All functionalities working
 - ✅ Real-time database updates
