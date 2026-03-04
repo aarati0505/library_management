@@ -1,4 +1,11 @@
 # Library Management System - Final Project Report
+Group members-
+Aarati Dhamele 2023B1A70641H
+Shreya Bhaskar 2023B4A70970H
+Sudhansh Pilla 2023B4A70953H
+Yash Kejriwal 2023B4A70770H
+Parth Sureka 2023B4A70753H
+Kotra Keshav Gupta 2023A7PS0534P
 
 ## Table of Contents
 1. [Problem Description and Assumptions](#1-problem-description-and-assumptions)
@@ -1175,3 +1182,4 @@ The system demonstrates proper database design principles, implementation of com
 
 **Last Updated**: March 2026
 **Version**: 1.0
+
