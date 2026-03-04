@@ -26,13 +26,7 @@ All entities in this system are **strong entities** with independent existence:
 
 ```mermaid
 erDiagram
-    CATEGORY ||--o{ BOOK : "categorizes (N:1, Total:Partial)"
-    BOOK }o--o{ AUTHOR : "written_by (M:N, Total:Partial)"
-    BOOK ||--o{ LOAN : "borrowed_in (1:N, Partial:Total)"
-    MEMBER ||--o{ LOAN : "borrows (1:N, Partial:Total)"
-    STAFF ||--o{ LOAN : "issues (1:N, Partial:Total)"
-    BOOK }o--|| BOOK_AUTHOR : "has"
-    AUTHOR ||--o{ BOOK_AUTHOR : "writes"
+    CATEGORY ||--o{ BOOK_AUTHOR : "writes"
 
     CATEGORY {
         int Category_ID PK "Auto-increment"
@@ -58,8 +52,8 @@ erDiagram
     }
 
     BOOK_AUTHOR {
-        varchar ISBN PK_FK "Composite PK, CASCADE"
-        int Author_ID PK_FK "Composite PK, CASCADE"
+        varchar ISBN PK,FK "Composite PK, CASCADE"
+        int Author_ID PK,FK "Composite PK, CASCADE"
     }
 
     MEMBER {
@@ -304,3 +298,4 @@ erDiagram
 ---
 
 **Note:** The Mermaid diagram provides an interactive, auto-rendered visualization with all constraints, cardinalities, and participation clearly marked.
+
