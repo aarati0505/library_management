@@ -26,65 +26,71 @@ All entities in this system are **strong entities** with independent existence:
 
 ```mermaid
 erDiagram
-    CATEGORY ||--o{ BOOK_AUTHOR : "writes"
+    CATEGORY ||--o{ BOOK : "categorizes"
+    BOOK ||--o{ LOAN : "borrowed_in"
+    BOOK }o--o{ AUTHOR : "written_by"
+    MEMBER ||--o{ LOAN : "borrows"
+    STAFF ||--o{ LOAN : "issues"
+    BOOK }o--|| BOOK_AUTHOR : "has"
+    AUTHOR ||--o{ BOOK_AUTHOR : "writes"
 
     CATEGORY {
-        int Category_ID PK "Auto-increment"
-        varchar Category_Name UK "UNIQUE, NOT NULL"
-        text Description "NULL allowed"
+        int Category_ID PK
+        varchar Category_Name UK "UNIQUE"
+        text Description
     }
 
     AUTHOR {
-        int Author_ID PK "Auto-increment"
-        varchar Name "NOT NULL"
-        text Biography "NULL allowed"
-        varchar Country "NULL allowed"
+        int Author_ID PK
+        varchar Name
+        text Biography
+        varchar Country
     }
 
     BOOK {
-        varchar ISBN PK "13 digits, NOT NULL"
-        varchar Title "NOT NULL"
-        varchar Publisher "NOT NULL"
-        int Publication_Year "CHECK >= 1800"
-        int Total_Copies "CHECK >= 1"
-        int Available_Copies "CHECK >= 0, <= Total_Copies"
-        int Category_ID FK "NOT NULL, REFERENCES CATEGORY"
+        varchar ISBN PK "13 digits"
+        varchar Title
+        varchar Publisher
+        int Publication_Year
+        int Total_Copies
+        int Available_Copies
+        int Category_ID FK
     }
 
     BOOK_AUTHOR {
-        varchar ISBN PK,FK "Composite PK, CASCADE"
-        int Author_ID PK,FK "Composite PK, CASCADE"
+        varchar ISBN PK,FK
+        int Author_ID PK,FK
     }
 
     MEMBER {
-        int Member_ID PK "Auto-increment"
-        varchar Name "NOT NULL"
-        varchar Email UK "UNIQUE, NOT NULL"
-        varchar Phone "10 digits, NOT NULL"
-        varchar Address "NULL allowed"
-        date Join_Date "DEFAULT CURRENT_DATE"
+        int Member_ID PK
+        varchar Name
+        varchar Email UK "UNIQUE"
+        varchar Phone "10 digits"
+        varchar Address
+        date Join_Date
         enum Membership_Type "Student/Faculty/General"
-        decimal Total_Fine "CHECK >= 0, DEFAULT 0"
+        decimal Total_Fine
     }
 
     STAFF {
-        int Staff_ID PK "Auto-increment"
-        varchar Name "NOT NULL"
-        varchar Email UK "UNIQUE, NOT NULL"
-        varchar Phone "10 digits, NOT NULL"
-        varchar Role "NOT NULL"
-        date Hire_Date "NOT NULL"
+        int Staff_ID PK
+        varchar Name
+        varchar Email UK "UNIQUE"
+        varchar Phone "10 digits"
+        varchar Role
+        date Hire_Date
     }
 
     LOAN {
-        int Loan_ID PK "Auto-increment"
-        varchar ISBN FK "NOT NULL, RESTRICT"
-        int Member_ID FK "NOT NULL, RESTRICT"
-        int Staff_ID FK "NOT NULL, RESTRICT"
-        date Issue_Date "DEFAULT CURRENT_DATE"
-        date Due_Date "CHECK > Issue_Date"
+        int Loan_ID PK
+        varchar ISBN FK
+        int Member_ID FK
+        int Staff_ID FK
+        date Issue_Date
+        date Due_Date
         date Return_Date "NULL if active"
-        decimal Fine_Amount "CHECK >= 0 AND <= 1000"
+        decimal Fine_Amount
         enum Status "Active/Returned/Overdue"
     }
 ```
@@ -298,4 +304,5 @@ erDiagram
 ---
 
 **Note:** The Mermaid diagram provides an interactive, auto-rendered visualization with all constraints, cardinalities, and participation clearly marked.
+
 
